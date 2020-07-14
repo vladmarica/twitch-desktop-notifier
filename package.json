@@ -1,0 +1,41 @@
+{
+  "name": "twitch-desktop-notifier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/main/app.js",
+  "scripts": {
+    "build:main": "tsc -p src/main/tsconfig.json",
+    "build:main:watch": "npm run build:main -- --watch",
+    "build:ui": "tsc -p src/ui/tsconfig.json",
+    "build:ui:watch": "npm run build:ui -- --watch",
+    "start": "electron build/main/app.js",
+    "build:pack": "electron-builder --dir",
+    "build:binary": "electron-builder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladmarica/twitch-desktop-notifier.git"
+  },
+  "author": "Vlad Marica",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vladmarica/twitch-desktop-notifier/issues"
+  },
+  "homepage": "https://github.com/vladmarica/twitch-desktop-notifier#readme",
+  "devDependencies": {
+    "@types/node": "12.12.21",
+    "electron": "^9.1.0",
+    "electron-builder": "^22.7.0",
+    "typescript": "^3.9.6"
+  },
+  "build": {
+    "appId": "com.vladmarica.twitchnotifier",
+    "productName": "Twitch Desktop Notifier",
+    "files": [
+      "build/",
+      "node_modules/",
+      "res/",
+      "package.json"
+    ]
+  }
+}
