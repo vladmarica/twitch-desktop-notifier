@@ -36,6 +36,9 @@
       "node_modules/",
       "res/",
       "package.json"
-    ]
+    ],
+    "linux": {
+      "target": "zip"
+    }
   }
 }
