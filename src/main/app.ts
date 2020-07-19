@@ -1,6 +1,6 @@
 import path from 'path';
 import os from 'os';
-import { app, BrowserWindow, Menu, Tray, NativeImage } from 'electron';
+import { app, BrowserWindow, Menu, Tray, nativeImage } from 'electron';
 import svg2img from 'svg2img';
 
 const TITLE = 'Twitch Desktop Notifier';
@@ -10,21 +10,21 @@ function getResourcePath(resourceName: string) {
   return path.join(__dirname, RES_PATH, path.normalize(resourceName));
 }
 
-async function getProgramIcon(): Promise<NativeImage> {
+async function getProgramIcon(): Promise<nativeImage> {
   if (os.platform() === 'linux') {
     return getIconFromSvg('/usr/share/icons/Papirus-Dark/16x16@2x/panel/twitch-indicator.svg');
   }
 
-  return NativeImage.createFromPath(getResourcePath('icon.png'));
+  return nativeImage.createFromPath(getResourcePath('icon.png'));
 }
 
-async function getIconFromSvg(svgFilePath: string): Promise<NativeImage> {
-  return new Promise<NativeImage>((resolve, reject) => {
+async function getIconFromSvg(svgFilePath: string): Promise<nativeImage> {
+  return new Promise<nativeImage>((resolve, reject) => {
     svg2img(svgFilePath, (err, buffer) => {
       if (err) {
         return reject();
       }
-      return resolve(NativeImage.createFromBuffer(buffer, { width: 16, height: 16})); 
+      return resolve(nativeImage.createFromBuffer(buffer, { width: 16, height: 16})); 
     });
   });
 }
