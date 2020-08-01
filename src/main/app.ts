@@ -1,10 +1,9 @@
 import path from 'path';
 import os from 'os';
 import { app, BrowserWindow, Menu, Tray, nativeImage } from 'electron';
-import svg2img from 'svg2img';
-import GtkIcons from 'node-gtk-icon-lookup';
 
 const TITLE = 'Twitch Desktop Notifier';
+const GTK_ICON_NAME = 'twitch-indicator';
 const RES_PATH = '../../res';
 
 function getResourcePath(resourceName: string) {
@@ -12,25 +11,15 @@ function getResourcePath(resourceName: string) {
 }
 
 async function getProgramIcon(): Promise<nativeImage> {
-  if (os.platform() === 'linux' && await GtkIcons.isIconLookupSupported()) {
-    const gtkIconPath =  GtkIcons.getIconFilePath('twitch-indicator');
-    if (gtkIconPath) {
-      return getIconFromSvg(gtkIconPath);
+  // On Linux, try to use the 'twitch-indicator' GTK icon if available
+  if (os.platform() === 'linux') {
+    const icon = await (require('./util/linux/icons')(GTK_ICON_NAME) as Promise<nativeImage | null>);
+    if (icon !== null) {
+      return icon;
     }
   }
 
   return nativeImage.createFromPath(getResourcePath('icon.png'));
-}
-
-async function getIconFromSvg(svgFilePath: string): Promise<nativeImage> {
-  return new Promise<nativeImage>((resolve, reject) => {
-    svg2img(svgFilePath, (err, buffer) => {
-      if (err) {
-        return reject();
-      }
-      return resolve(nativeImage.createFromBuffer(buffer)); 
-    });
-  });
 }
 
 let tray = null;

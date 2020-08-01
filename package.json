@@ -43,6 +43,14 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
   },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "optionalDependencies": {
+    "node-gtk-icon-lookup": "^1.0.2",
+    "svg2img": "0.7.2"
+  },
   "build": {
     "appId": "com.vladmarica.twitchnotifier",
     "productName": "Twitch Desktop Notifier",
@@ -55,11 +63,5 @@
     "linux": {
       "target": "zip"
     }
-  },
-  "dependencies": {
-    "node-gtk-icon-lookup": "^1.0.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "svg2img": "^0.7.1"
   }
 }
