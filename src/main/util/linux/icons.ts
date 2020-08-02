@@ -12,7 +12,7 @@ async function getIconFromSvg(svgFilePath: string): Promise<nativeImage> {
   });
 }
 
-export default async function getGtkIcon(iconName: string): Promise<nativeImage | null> {
+async function getGtkIcon(iconName: string): Promise<nativeImage | null> {
   const GtkIcons = require('node-gtk-icon-lookup');
   if (await GtkIcons.isIconLookupSupported()) {
     const gtkIconPath = GtkIcons.getIconFilePath('twitch-indicator');
@@ -22,3 +22,5 @@ export default async function getGtkIcon(iconName: string): Promise<nativeImage 
   }
   return null;
 }
+
+exports.getGtkIcon = getGtkIcon;

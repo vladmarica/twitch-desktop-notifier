@@ -13,7 +13,8 @@ function getResourcePath(resourceName: string) {
 async function getProgramIcon(): Promise<nativeImage> {
   // On Linux, try to use the 'twitch-indicator' GTK icon if available
   if (os.platform() === 'linux') {
-    const icon = await (require('./util/linux/icons')(GTK_ICON_NAME) as Promise<nativeImage | null>);
+    const LinuxIconProvider = require('./util/linux/icons');
+    const icon = await (LinuxIconProvider.getGtkIcon(GTK_ICON_NAME) as Promise<nativeImage | null>);
     if (icon !== null) {
       return icon;
     }
