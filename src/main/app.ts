@@ -1,6 +1,11 @@
 import path from 'path';
 import os from 'os';
-import { app, BrowserWindow, Menu, Tray, nativeImage } from 'electron';
+import { app, BrowserWindow, Menu, Tray, nativeImage, ipcMain } from 'electron';
+import { v4 as uuidv4 } from 'uuid';
+import TwitchAuthentication from './twitch/authentication';
+import { REDIRECT_URL } from './twitch/constants';
+import UserData, { SessionData } from './user-data';
+import { exit } from 'process';
 
 const TITLE = 'Twitch Desktop Notifier';
 const GTK_ICON_NAME = 'twitch-indicator';
@@ -24,7 +29,7 @@ async function getProgramIcon(): Promise<nativeImage> {
 }
 
 let tray = null;
-let window = null;
+let window: BrowserWindow | null = null;
 
 app.on('ready', async () => {
   const icon = await getProgramIcon();
@@ -39,15 +44,46 @@ app.on('ready', async () => {
   ]));
 
   window = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 650,
+    height: 820,
     title: TITLE,
     icon: icon,
+    show: false,
+    backgroundColor: '#2D3748',
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
     }
   });
 
+  await UserData.validateUserDataFolder();
+
+  window.once('ready-to-show', () => { window!.show() });
+
+  let userSessionData: SessionData;
+  if (await UserData.sessionDataExists()) {
+    console.log('User data exists!');
+    userSessionData = await UserData.loadSessionData();
+  } else {
+    const accessToken = await TwitchAuthentication.implicitAuthFlow(window, false);
+    
+    console.log(`Access token: ${accessToken}`);
+
+    userSessionData = {
+      accessToken: accessToken,
+      lastUpdated: Math.floor(Date.now() / 1000),
+    }
+
+    await UserData.saveSessionData(userSessionData);
+  }
+
   window.loadFile(getResourcePath('index.html'));
-  // window.removeMenu();
+
+  window.webContents.once('did-finish-load', () => {
+    window!.webContents.send('user-data-update', userSessionData);
+  });
+
+  ipcMain.once('exit-click', () => {
+    app.exit();
+  });
 });

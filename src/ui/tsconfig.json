@@ -6,6 +6,6 @@
     "jsx":"react"
   },
   "include": [
-    "./**/*.ts", "./**/*.tsx"
+    "./**/*.ts", "./**/*.tsx", "../main/preload.ts"
   ]
 }

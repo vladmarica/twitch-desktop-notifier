@@ -6,11 +6,12 @@
   "scripts": {
     "build:main": "tsc -p src/main/tsconfig.json",
     "build:main:watch": "npm run build:main -- --watch",
-    "build:ui": "tsc -p src/ui/tsconfig.json",
+    "build:ui": "webpack --mode development",
     "build:ui:watch": "npm run build:ui -- --watch",
     "start": "electron build/main/app.js",
     "build:pack": "electron-builder --dir",
-    "build:binary": "electron-builder"
+    "build:binary": "electron-builder",
+    "fix-sandbox:linux": "sudo sysctl kernel.unprivileged_userns_clone=1"
   },
   "repository": {
     "type": "git",
@@ -27,9 +28,11 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@types/mkdirp": "^1.0.1",
     "@types/node": "12.12.21",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "@types/uuid": "^8.0.0",
     "@typescript-eslint/eslint-plugin": "^3.6.1",
     "@typescript-eslint/parser": "^3.6.1",
     "babel-loader": "^8.1.0",
@@ -37,6 +40,7 @@
     "electron": "^9.1.0",
     "electron-builder": "^22.7.0",
     "electron-rebuild": "^1.11.0",
+    "electron-reload": "^1.5.0",
     "sass-loader": "^9.0.2",
     "style-loader": "^1.2.1",
     "typescript": "^3.9.6",
@@ -44,8 +48,10 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "mkdirp": "^1.0.4",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "uuid": "^8.3.0"
   },
   "optionalDependencies": {
     "node-gtk-icon-lookup": "^1.0.2",
