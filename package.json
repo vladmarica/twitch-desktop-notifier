@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "^3.6.1",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",
-    "electron": "^9.1.0",
+    "electron": "^9.3.0",
     "electron-builder": "^22.7.0",
     "electron-rebuild": "^1.11.0",
     "electron-reload": "^1.5.0",
