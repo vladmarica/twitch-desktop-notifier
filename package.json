@@ -55,7 +55,7 @@
   },
   "optionalDependencies": {
     "node-gtk-icon-lookup": "^1.0.2",
-    "svg2img": "0.7.2"
+    "svg2img": "1.0.0-beta.2"
   },
   "build": {
     "appId": "com.vladmarica.twitchnotifier",
